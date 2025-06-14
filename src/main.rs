@@ -5,20 +5,31 @@ use crossterm::{
 };
 
 fn main() -> io::Result<()> {
-  let mut stdout = io::stdout();
+    let mut stdout = io::stdout();
 
-  stdout.execute(terminal::Clear(terminal::ClearType::All))?;
+    stdout.execute(terminal::Clear(terminal::ClearType::All))?;
 
-  for y in 0..40 {
-    for x in 0..150 {
-      if (y == 0 || y == 40 - 1) || (x == 0 || x == 150 - 1) {
-        // in this loop we are more efficient by not flushing the buffer.
-        stdout
-          .queue(cursor::MoveTo(x,y))?
-          .queue(style::PrintStyledContent( "█".magenta()))?;
-      }
+    //display dimensions
+    let yd = 30;
+    let xd = 100;
+
+    // Define starting positions for two cells
+    let cell1 = (15, 15); // (x, y) coordinates for first cell
+    let cell2 = (16, 15); // (x, y) coordinates for second cell
+
+    for y in 0..yd {
+        for x in 0..xd {
+            let symbol = if (x, y) == cell1 || (x, y) == cell2 {
+                "#"
+            } else {
+                "."
+            };
+            
+            stdout
+                .queue(cursor::MoveTo(x, y))?
+                .queue(style::PrintStyledContent(symbol.white()))?;
+        }
     }
-  }
-  stdout.flush()?;
-  Ok(())
+    stdout.flush()?;
+    Ok(())
 }
