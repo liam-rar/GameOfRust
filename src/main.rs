@@ -24,7 +24,7 @@ fn main() -> io::Result<()> {
             } else {
                 "."
             };
-            
+
             stdout
                 .queue(cursor::MoveTo(x, y))?
                 .queue(style::PrintStyledContent(symbol.white()))?;
