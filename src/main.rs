@@ -1,4 +1,6 @@
-use std::io::{self, Write};
+use std::io::{self, Write,};
+use std::thread;
+use std::time::Duration;
 use crossterm::{
     ExecutableCommand, QueueableCommand,
     terminal, cursor, style::{self, Stylize}
@@ -15,39 +17,50 @@ fn main() -> io::Result<()> {
 
     stdout.execute(terminal::Clear(terminal::ClearType::All))?;
 
-    //get terminal size (returns tuple)
-    let term = terminal::size()?;
 
-    let (width, mut height) = term;
-    //smaller window size so I can write info at the bottom
-    height = height - 1;
-    let size = width * height;
+    let mut lifeCycles: i32 = 0;
 
-    let board = Board {
-        cells:vec![false; size as usize],
-        width: width,
-        height: height,
-    };
+    loop{
+        let term = terminal::size()?;
+        let (width, mut height) = term;
 
-    // Define starting positions for two cells
-    let cell1 = (15, 15); // (x, y) coordinates for first cell
-    let cell2 = (16, 15); // (x, y) coordinates for second cell
+        //smaller window size so I can write info at the bottom
+        height = height - 1;
+        let size = width * height;
 
-    for y in 0..board.height {
-        for x in 0..board.width {
-            let symbol = if (x, y) == cell1 || (x, y) == cell2 {
-                "#"
-            } else {
-                "."
-            };
+        let mut board = Board {
+            cells:vec![false; size as usize],
+            width: width,
+            height: height,
+        };
 
-            stdout
-                .queue(cursor::MoveTo(x as u16, y as u16))?
-                .queue(style::PrintStyledContent(symbol.white()))?;
+        for y in 0..board.height {
+            for x in 0..board.width {
+                let index = y * board.width + x;
+
+                //living cells
+                if index == 190 {
+                    board.cells[index as usize] = true
+                }
+
+                //set display
+                let symbol = if board.cells[index as usize] {
+                    "#"
+                } else {
+                    "."
+                };
+                stdout
+                    .queue(cursor::MoveTo(x as u16, y as u16))?
+                    .queue(style::PrintStyledContent(symbol.white()))?;
+            }
         }
+        println!("life cycles: {}, window size = x: {} y: {}", lifeCycles, width, height);
+        thread::sleep(Duration::from_millis(1000));
+        lifeCycles = lifeCycles + 1;
+        stdout.execute(terminal::Clear(terminal::ClearType::All))?;
+        if lifeCycles == 11 { break }
     }
 
-    println!("window size = x: {} y: {}", width, height);
     stdout.flush()?;
     Ok(())
 }
