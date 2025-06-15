@@ -27,9 +27,13 @@
     - The width is crucial as it tells us how many cells to skip to move down a row
 - Neighbor Calculation
     - Each cell has 8 neighbors (except edge cells)
-    - Neighbors are in these relative positions:
-    - Apply to main.rs
     - To find neighbors, you add these offsets to the current cell's coordinates
+    - Neighbors are in these relative positions:
+ ```rust
+     (-1,-1) (0,-1) (1,-1)
+     (-1, 0) (cell) (1, 0)
+     (-1, 1) (0, 1) (1, 1)
+```
 - Edge Handling
     - You have several options for handling edges:
     - Toroidal (wrapping): Cells on the right edge connect to the left edge
