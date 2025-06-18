@@ -1,23 +1,3 @@
-# Data Structure
-- Create a 2D grid/board to represent the game state
-
-## Struct-based Approach
-```rust
-    struct Board {
-       cells: Vec<bool>,
-       width: usize,
-       height: usize,
-    }
-```
-- Pros:
-    - Encapsulates the board logic
-    - Can implement methods for common operations
-    - Can add additional metadata (generation count, etc.)
-    - Can implement traits like Display, Debug
-- Cons:
-    - Slightly more complex initial setup
-    - Need to implement helper methods
-
 ### Cell Calculation Theory:
 - Position Calculation
     - Each cell has an (x,y) coordinate in the grid
@@ -48,13 +28,10 @@
         - Using parallel processing for large grids
 
 # Game Logic
-- Implement the core rules of Conway's Game of Life:
 - Any live cell with fewer than 2 live neighbors dies (underpopulation)
 - Any live cell with 2 or 3 live neighbors lives
 - Any live cell with more than 3 live neighbors dies (overpopulation)
 - Any dead cell with exactly 3 live neighbors becomes alive (reproduction)
-- Create a function to count neighbors for each cell
-- Create a function to compute the next generation based on current state
 
 # Game Loop
 - Add a main game loop that:
@@ -62,23 +39,3 @@
     - Computes the next generation
     - Updates the display
     - Adds a small delay between generations
-    - Handles user input (optional: pause, quit, etc.)
-
-# User Interaction
-- Add keyboard controls to:
-    - Start/stop the simulation
-    - Clear the board
-    - Add/remove cells manually
-    - Adjust simulation speed
-    - Consider adding a simple menu system
-
-# Optimization
-- Consider using a double-buffering technique for the display
-- Optimize the neighbor counting algorithm
-- Consider using a more efficient data structure for sparse populations
-
-# Additional Features
-- Add different patterns (gliders, blinkers, etc.)
-- Add a way to save/load patterns
-- Add statistics (generation count, population count)
-- Add color coding for different cell states or ages
