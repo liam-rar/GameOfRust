@@ -14,7 +14,8 @@ struct Board {
 
 fn main() -> io::Result<()> {
     let mut stdout = io::stdout();
-    stdout.execute(terminal::Clear(terminal::ClearType::All))?;
+    stdout.execute(cursor::MoveTo(0, 0))?;
+    stdout.execute(cursor::Hide)?;
     let mut life_cycles: i32 = 0;
 
     let term = terminal::size()?;
@@ -29,16 +30,8 @@ fn main() -> io::Result<()> {
         height: height,
     };
 
-    //find middle of board
-    let startCell = (width * height)/2;
-
     let (start_x, start_y) = (width/2, height/2);
     set_glider(&mut board, start_x, start_y);
-
-    //starting pattern
-//  board.cells[startCell as usize + 1] = true;
-//  board.cells[startCell as usize + 2] = true;
-//  board.cells[startCell as usize] = true;
 
     let mut new_board = Board {
         cells:vec![false; size as usize],
@@ -79,7 +72,7 @@ fn main() -> io::Result<()> {
         println!("life cycles: {}, window size = x: {} y: {}", life_cycles, width, height);
         thread::sleep(Duration::from_millis(500));
         life_cycles = life_cycles + 1;
-        stdout.execute(terminal::Clear(terminal::ClearType::All))?;
+        stdout.execute(cursor::MoveTo(0, 0))?;
         if life_cycles == 101 { break }
     }
 
