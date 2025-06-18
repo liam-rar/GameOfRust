@@ -36,7 +36,7 @@ fn main() -> io::Result<()> {
     //set_block(&mut board, start_x, start_y);
     //set_toad(&mut board, start_x, start_y);
     //set_beacon(&mut board, start_x, start_y);
-    set_pulsar(&mut board, start_x, start_y);
+    //set_pulsar(&mut board, start_x, start_y);
 
     let mut new_board = Board {
         cells:vec![false; size as usize],
